@@ -20,7 +20,7 @@ if [[ -z $atomic_number ]];then
   echo "I could not find that element in the database."
   exit 1
 fi
-  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=1")
+  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=$atomic_number")
   symbol=$($PSQL "select symbol from elements where atomic_number=$atomic_number")
   name=$($PSQL "select name from elements where atomic_number=$atomic_number")
   mass=$($PSQL "select atomic_mass from properties where atomic_number=$atomic_number")
@@ -37,7 +37,7 @@ elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -le 2 ]];then
     echo "I could not find that element in the database."
     exit 1
   fi
-  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=1")
+  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=$atomic_number")
   name=$($PSQL "select name from elements where symbol ='$symbol'")
   mass=$($PSQL "select atomic_mass from properties where atomic_number=$atomic_number")
   melting_point=$($PSQL "select melting_point_celsius from properties where atomic_number=$atomic_number")
@@ -54,7 +54,7 @@ elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -gt 2 ]];then
     echo "I could not find that element in the database."
     exit 1
   fi
-  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=1")
+  type=$($PSQL "select t.type from types t inner join properties p on t.type_id=p.type_id where p.atomic_number=$atomic_number")
   symbol=$($PSQL "select symbol from elements where atomic_number =$atomic_number")
   mass=$($PSQL "select atomic_mass from properties where atomic_number=$atomic_number")
   melting_point=$($PSQL "select melting_point_celsius from properties where atomic_number=$atomic_number")
