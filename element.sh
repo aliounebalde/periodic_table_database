@@ -30,5 +30,5 @@ elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -gt 2 ]];then
   boiling_point=$($PSQL "select boiling_point_celsius from properties where atomic_number=$atomic_number")
   echo "The element with atomic number $atomic_number is $name ($symbol). It's a nonmetal, with a mass of $mass amu. $name has a melting point of $melting_point celsius and a boiling point of $boiling_point celsius."
 else
-  echo rien
+  echo "I could not find that element in the database."
 fi
