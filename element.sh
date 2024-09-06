@@ -20,48 +20,45 @@ print_element_info() {
 # Vérification des arguments
 if [[ -z $1 ]]; then
   echo "Please provide an element as an argument."
-  exit 1
-fi
-
-# Si l'argument est un nombre (numéro atomique)
-if [[ $1 =~ ^[0-9]+$ ]]; then
-  atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE atomic_number = $1")
-  
-  # Vérification si l'élément existe
-  if [[ -z $atomic_number ]]; then
-    echo "I could not find that element in the database."
-    exit 1
-  fi
-  
-  # Appeler la fonction pour afficher les infos de l'élément
-  print_element_info $atomic_number
-
-# Si l'argument est un symbole (2 caractères max)
-elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -le 2 ]]; then
-  symbol=$1
-  atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE symbol = '$symbol'")
-  
-  if [[ -z $atomic_number ]]; then
-    echo "I could not find that element in the database."
-    exit 1
-  fi
-  
-  # Afficher les infos de l'élément
-  print_element_info $atomic_number
-
-# Si l'argument est un nom d'élément
-elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -gt 2 ]]; then
-  name=$1
-  atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE name = '$name'")
-  
-  if [[ -z $atomic_number ]]; then
-    echo "I could not find that element in the database."
-    exit 1
-  fi
-  
-  # Afficher les infos de l'élément
-  print_element_info $atomic_number
 
 else
-  echo "I could not find that element in the database."
+
+    # Si l'argument est un nombre (numéro atomique)
+    if [[ $1 =~ ^[0-9]+$ ]]; then
+      atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE atomic_number = $1")
+      
+      # Vérification si l'élément existe
+      if [[ -z $atomic_number ]]; then
+        echo "I could not find that element in the database."
+      
+      else
+      # Appeler la fonction pour afficher les infos de l'élément
+        print_element_info $atomic_number
+      fi
+    # Si l'argument est un symbole (2 caractères max)
+    elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -le 2 ]]; then
+      symbol=$1
+      atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE symbol = '$symbol'")
+      
+      if [[ -z $atomic_number ]]; then
+        echo "I could not find that element in the database."
+    
+      else
+      # Afficher les infos de l'élément
+        print_element_info $atomic_number
+      fi
+    # Si l'argument est un nom d'élément
+    elif [[ "$1" =~ ^[a-zA-Z]+$ && ${#1} -gt 2 ]]; then
+      name=$1
+      atomic_number=$($PSQL "SELECT atomic_number FROM elements WHERE name = '$name'")
+      
+      if [[ -z $atomic_number ]]; then
+        echo "I could not find that element in the database."
+      else
+      # Afficher les infos de l'élément
+      print_element_info $atomic_number
+      fi
+    else
+      echo "I could not find that element in the database."
+    fi
 fi
